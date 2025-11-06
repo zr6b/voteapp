@@ -8,7 +8,7 @@ const path = require('path');
 const mysql = require('mysql2/promise');
 
 const app = express();
-const PORT = 3007;
+const PORT = 3000;
 
 // ⚠️ 關鍵：請再次確認您的 MySQL 數據庫信息！
 const dbConfig = {
