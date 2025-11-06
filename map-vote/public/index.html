@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>祖國統一 臺灣當歸·實時熱點地圖</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;700&family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="toast-container"></div>
+
+<h1 class="main-title">🇨🇳祖國統一 臺灣當歸·實時熱點地圖</h1> <div class="main-container">
+
+    <div class="dashboard-container">
+
+        <div class="map-column card">
+            <header>
+                <h2>
+                    <span>總票數: <span id="total-count">0</span></span>
+                    <span id="today-container">
+                        今日新增: <span id="today-count">+0</span>
+                    </span>
+                    <span id="datetime-container">
+                        <span id="current-date"></span>
+                        <span id="current-time"></span>
+                    </span>
+                </h2>
+            </header>
+            <main>
+                <div id="map-container"></div>
+                <div id="danmaku-container"></div>
+            </main>
+
+            <footer class="danmaku-input-wrapper">
+                <div id="emoji-picker" class="emoji-picker hidden">
+                    <span>👍</span><span>😂</span><span>🔥</span><span>❤️</span>
+                    <span>🎉</span><span>🚀</span><span>💯</span><span>🇨🇳</span>
+                </div>
+                <div class="danmaku-input-bar">
+                    <div class="danmaku-input-field">
+                        <button id="emoji-btn" class="emoji-btn">😀</button>
+                        <input type="text" id="danmaku-input" placeholder="發送彈幕 (最多30字)" maxlength="30">
+                    </div>
+                    <div class="danmaku-input-actions">
+                        <button id="danmaku-toggle-btn" class="danmaku-toggle-btn active" title="關閉彈幕">
+                            <span>ON</span>
+                        </button>
+                        <button id="danmaku-send-btn">發送</button>
+                    </div>
+                </div>
+            </footer>
+        </div>
+
+        <div class="feed-column">
+            <div class="image-card card">
+                <img src="taiwan.png" alt="臺灣地圖" class="responsive-img">
+            </div>
+
+            <div class="button-card card">
+                <button id="vote-button" class="button-primary large">
+                    我要回家
+                </button>
+            </div>
+            <div class="right-column-wrapper">
+                <div id="live-feed-container" class="card">
+                    <h3>實時投票動態</h3>
+                    <div id="feed-list-wrapper">
+                        <ul id="feed-list">
+                            <li class="feed-item placeholder">暫無投票數據</li>
+                        </ul>
+                    </div>
+                </div>
+                <div id="ranking-container" class="card">
+                    <h3>地區票數排名</h3>
+                    <ul id="ranking-list"></ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="modal-overlay">
+    <div id="modal-content">
+        <h3>請您投票</h3>
+        <div class="form-group-inline">
+            <div class="form-group">
+                <label for="surname-input">您的姓氏</label>
+                <input type="text" id="surname-input" class="modal-input" placeholder="例如: 陳 (最多4字)" maxlength="4">
+            </div>
+            <div class="form-group">
+                <label for="gender-select">性別</label>
+                <select id="gender-select" class="modal-select">
+                    <option value="先生">先生</option>
+                    <option value="女士">女士</option>
+                    <option value="保密">保密</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="region-select">請選擇您所在的地區</label>
+            <select id="region-select" class="modal-select"></select>
+        </div>
+        <div class="modal-buttons">
+            <button id="submit-vote">確認投票</button>
+            <button id="cancel-vote">取消</button>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js"></script>
+<script src="https://unpkg.com/topojson-client@3"></script>
+<script src="app.js"></script>
+</body>
+</html>

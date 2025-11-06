@@ -1,0 +1,310 @@
+/* style.css (V48 - 圖片集成與佈局優化) */
+
+/* 1. 顏色變量 (不變) */
+:root {
+    --brand-red: #D7000F; --brand-red-light: #E53935; --brand-red-pale: #ffebee;
+    --bg-main: #f4f6f8; --bg-card: #ffffff;
+    --text-dark: #1a202c; --text-medium: #5a6578; --border-gray: #e2e8f0;
+    --font-sans: 'Noto Sans TC', sans-serif; --font-mono: 'Roboto Mono', monospace;
+}
+
+/* 2. 基礎和背景 (V46/V47 不變) */
+body {
+    font-family: var(--font-sans); background-color: var(--bg-main);
+    color: var(--text-dark); margin: 0; padding: 0;
+    min-height: 100vh; box-sizing: border-box;
+}
+
+/* --- V48 新增: 頂部大標題樣式 --- */
+.main-title {
+    font-size: 2.2em; /* 手機端標題 */
+    color: var(--brand-red); /* 遵囑: 改為中國紅 */
+    text-align: center;
+    padding: 15px 15px 0 15px; /* 上邊距和左右內邊距 */
+    margin: 0 auto;
+    max-width: 1600px;
+    font-weight: 700;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.05);
+}
+
+/* 3. V46 佈局 (手機端不變) */
+.main-container {
+    width: 100%; max-width: 1600px; padding: 15px;
+    box-sizing: border-box; margin: 0 auto;
+}
+.dashboard-container {
+    width: 100%; display: flex;
+    flex-direction: column; gap: 20px;
+    min-height: 0;
+}
+.map-column, .feed-column { width: 100%; }
+
+/* 4. V46 卡片樣式 (不變) */
+.card {
+    background: var(--bg-card); border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+    border: 1px solid var(--border-gray);
+    animation: slideInUp 0.8s 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+}
+
+/* 5. V41: 地圖卡片 (V48: 移除 h1) */
+.map-column { display: flex; flex-direction: column; }
+.map-column header { text-align: center; padding-bottom: 0; flex-shrink: 0; }
+.map-column header h1 { /* 此 h1 已經被移除，此規則理論上不再生效，但保留以便閱讀 */
+    margin: 0; font-size: 1.8em; color: var(--text-dark); font-weight: 700;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.05); padding-bottom: 15px; margin-bottom: 15px;
+    border-bottom: 1px solid var(--border-gray);
+}
+.map-column h2 { color: var(--text-medium); font-size: 1.1em; font-weight: 400; display: flex; justify-content: center; align-items: center; flex-direction: column; gap: 10px; }
+#today-container { font-size: 0.9em; color: var(--text-medium); background: var(--bg-main); padding: 5px 12px; border-radius: 6px; border: 1px solid var(--border-gray); }
+#total-count, #today-count { color: var(--brand-red); font-weight: 700; font-family: var(--font-mono); font-size: 1.1em; margin-left: 8px; }
+#datetime-container { font-size: 0.9em; background: var(--bg-main); padding: 5px 12px; border-radius: 6px; border: 1px solid var(--border-gray); font-family: var(--font-mono); text-align: center; line-height: 1.4; min-width: 130px; }
+#current-date { font-size: 0.9em; color: var(--text-medium); display: block; }
+#current-time { font-size: 1.1em; color: var(--text-dark); font-weight: 700; display: block; }
+main { text-align: center; padding-top: 15px; flex-grow: 1; position: relative; min-height: 0; }
+#map-container { width: 100%; height: 100%; min-height: 400px; background: transparent; }
+
+/* (V39 彈幕樣式 - 不變) */
+#danmaku-container { position: absolute; top: 0; left: 0; right: 0; bottom: 0; overflow: hidden; pointer-events: none; }
+#danmaku-container.danmaku-hidden .danmaku-item { display: none; }
+.danmaku-item { position: absolute; left: 100%; top: 50px; font-size: 20px; font-weight: 700; color: white; text-shadow: -1px -1px 0 var(--brand-red), 1px -1px 0 var(--brand-red), -1px 1px 0 var(--brand-red), 1px 1px 0 var(--brand-red), 0 0 5px rgba(0,0,0,0.5); white-space: nowrap; animation: danmaku-scroll 10s linear; animation-iteration-count: 1; }
+@media (min-width: 1024px) { .danmaku-item { font-size: 24px; } }
+@keyframes danmaku-scroll { from { left: 100%; transform: translateX(0); } to { left: 0; transform: translateX(-500px); } }
+
+/* V47 彈幕輸入欄 (不變) */
+.danmaku-input-wrapper {
+    margin-top: 15px; position: relative; flex-shrink: 0;
+    background: var(--bg-main);
+    border: 1px solid var(--border-gray);
+    border-radius: 12px;
+    padding: 15px;
+}
+.danmaku-input-bar {
+    display: flex;
+    flex-direction: column; /* 手機端: 垂直堆疊 */
+    gap: 10px;
+}
+.danmaku-input-field {
+    display: flex;
+    gap: 10px;
+}
+.danmaku-input-actions {
+    display: flex;
+    gap: 10px;
+}
+#danmaku-send-btn {
+    flex-grow: 1; /* 手機端: 填滿寬度 */
+}
+.emoji-picker {
+    position: absolute;
+    bottom: 123px;
+    left: 15px;
+    background: var(--bg-card);
+    border: 1px solid var(--border-gray);
+    box-shadow: 0 -5px 15px rgba(0,0,0,0.08);
+    border-radius: 8px; padding: 10px;
+    display: flex; gap: 8px; z-index: 10;
+}
+.emoji-btn { flex-shrink: 0; width: 44px; height: 44px; display: flex; justify-content: center; align-items: center; font-size: 1.4em; background: var(--bg-card); border: 1px solid var(--border-gray); border-radius: 8px; cursor: pointer; transition: background 0.3s; }
+.emoji-btn:hover { background: var(--border-gray); }
+#danmaku-input {
+    flex-grow: 1; height: 44px; padding: 0 15px; font-size: 1em;
+    font-family: var(--font-sans); border-radius: 8px;
+    border: 1px solid var(--border-gray); background: var(--bg-card);
+    color: var(--text-dark); box-sizing: border-box; min-width: 0;
+}
+#danmaku-input:focus { outline: none; border-color: var(--brand-red); box-shadow: 0 0 0 3px rgba(215, 0, 15, 0.2); }
+.danmaku-toggle-btn { flex-shrink: 0; height: 44px; width: 60px; font-family: var(--font-mono); font-weight: 700; font-size: 0.9em; border: 1px solid var(--border-gray); border-radius: 8px; cursor: pointer; transition: all 0.3s ease; background: var(--bg-card); color: var(--text-medium); }
+.danmaku-toggle-btn.active { background: var(--brand-red); color: var(--bg-card); border-color: var(--brand-red); }
+.danmaku-toggle-btn:not(.active) { background: var(--text-medium); color: var(--bg-card); border-color: var(--text-medium); }
+#danmaku-send-btn { flex-shrink: 0; height: 44px; padding: 0 20px; font-size: 1em; font-family: var(--font-mono); font-weight: 700; background: var(--brand-red); color: var(--bg-card); border: none; border-radius: 8px; cursor: pointer; transition: background 0.3s; }
+#danmaku-send-btn:hover { background: var(--brand-red-light); }
+.emoji-picker.hidden { display: none; }
+.emoji-picker span { font-size: 1.5em; cursor: pointer; padding: 5px; border-radius: 4px; transition: background 0.2s; }
+.emoji-picker span:hover { background: var(--bg-main); }
+
+/* 6. V20: 按鈕 (V47 不變) */
+.feed-column { display: flex; flex-direction: column; }
+.feed-column.card { flex-grow: 1; min-height: 0; display: flex; flex-direction: column; }
+.button-card { padding: 20px; flex-shrink: 0; }
+.button-primary.large { width: 100%; font-size: 1.2em; padding: 16px 30px; margin: 0; background-color: var(--brand-red); border: none; color: var(--bg-card); font-family: var(--font-mono); font-weight: 700; border-radius: 8px; cursor: pointer; box-shadow: 0 4px 10px rgba(215, 0, 15, 0.2); transition: all 0.3s ease; }
+.button-primary.large:hover { background-color: var(--brand-red-light); box-shadow: 0 6px 15px rgba(215, 0, 15, 0.3); transform: translateY(-3px); }
+.button-primary.large:active { transform: translateY(0); box-shadow: 0 2px 5px rgba(215, 0, 15, 0.2); }
+.button-primary.large:disabled { background-color: var(--text-medium); color: var(--bg-card); box-shadow: none; cursor: not-allowed; transform: none; opacity: 0.7; }
+
+/* --- V48 新增: 圖片卡片樣式 --- */
+.image-card {
+    padding: 0; /* 圖片本身不需內邊距 */
+    text-align: center; /* 讓圖片居中 */
+    /* 繼承 .card 的圓角、陰影、邊框 */
+}
+.responsive-img {
+    max-width: 100%; /* 圖片響應式 */
+    height: auto; /* 保持圖片比例 */
+    border-radius: 12px; /* 繼承 card 的圓角 */
+    display: block; /* 移除圖片底部多餘空間 */
+}
+/* --- 結束 V48 --- */
+
+/* V19: 右側列表 (不變) */
+.right-column-wrapper { display: flex; flex-direction: column; gap: 20px; flex-grow: 1; min-height: 0; }
+
+/* 7. V20: 實時動態 (不變) */
+#live-feed-container { padding: 20px; display: flex; flex-direction: column; height: 400px; }
+#live-feed-container h3 { margin: 0 0 15px 0; text-align: center; color: var(--brand-red); font-family: var(--font-sans); font-size: 1.2em; border-bottom: 1px solid var(--border-gray); padding-bottom: 10px; flex-shrink: 0; }
+#feed-list-wrapper { flex-grow: 1; overflow: hidden; position: relative; min-height: 0;}
+#feed-list { list-style: none; padding: 0; margin: 0; overflow-y: auto; height: 100%; }
+.feed-item { background: transparent; border-radius: 4px; padding: 8px 12px; margin-bottom: 8px; font-size: 0.9em; color: var(--text-medium); border-left: 3px solid var(--brand-red); }
+.feed-item.placeholder { color: var(--text-medium); text-align: center; border: none; }
+.feed-item span { color: var(--text-medium); font-family: var(--font-mono); display: inline-block;  }
+.feed-item strong { color: var(--text-dark); font-weight: 700; }
+
+/* 8. V21: 地區排名 (不變) */
+#ranking-container { padding: 20px; display: flex; flex-direction: column; height: 400px; }
+#ranking-container h3 { margin: 0 0 15px 0; text-align: center; color: var(--brand-red); font-family: var(--font-sans); font-size: 1.2em; border-bottom: 1px solid var(--border-gray); padding-bottom: 10px; flex-shrink: 0; }
+#ranking-list { list-style: none; padding: 0; margin: 0; flex-grow: 1; overflow-y: auto; padding-top: 5px; }
+.rank-item { display: flex; align-items: center; margin-bottom: 16px; font-size: 0.9em; }
+.rank-position { flex: 0 0 40px; font-size: 1.1em; font-weight: 700; color: var(--text-medium); text-align: center; }
+.rank-position.gold { color: #FFD700; font-size: 1.3em; }
+.rank-position.silver { color: #C0C0C0; font-size: 1.3em; }
+.rank-position.bronze { color: #CD7F32; font-size: 1.3em; }
+.rank-name { flex: 1; color: var(--text-dark); font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; padding-left: 5px; }
+.rank-bar-wrapper { flex: 2; height: 12px; background: var(--border-gray); border-radius: 6px; margin: 0 10px; overflow: hidden; }
+.rank-bar-fill { height: 100%; background: var(--brand-red); border-radius: 6px; width: 0%; transition: width 0.5s ease-out; }
+.rank-count { flex: 0 0 40px; text-align: right; color: var(--brand-red); font-family: var(--font-mono); font-weight: 700; font-size: 1.1em; }
+
+/* 9. V23: 滾動條 (不變) */
+#feed-list::-webkit-scrollbar, #ranking-list::-webkit-scrollbar { width: 6px; }
+#feed-list::-webkit-scrollbar-track, #ranking-list::-webkit-scrollbar-track { background: transparent; }
+#feed-list::-webkit-scrollbar-thumb, #ranking-list::-webkit-scrollbar-thumb { background: transparent; border-radius: 6px; transition: background 0.3s ease; }
+#feed-list:hover::-webkit-scrollbar-thumb, #ranking-list:hover::-webkit-scrollbar-thumb { background: var(--brand-red); }
+#feed-list:hover::-webkit-scrollbar-thumb:hover, #ranking-list:hover::-webkit-scrollbar-thumb:hover { background: var(--brand-red-light); }
+#feed-list, #ranking-list { scrollbar-width: thin; scrollbar-color: transparent transparent; transition: scrollbar-color 0.3s ease; }
+#feed-list:hover, #ranking-list:hover { scrollbar-color: var(--brand-red) transparent; }
+
+/* 10. V20 模態框 (不變) */
+#modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(26, 26, 26, 0.7); backdrop-filter: blur(5px); display: none; justify-content: center; align-items: center; z-index: 1000; }
+#modal-content { background: var(--bg-card); padding: 30px; border-radius: 12px; text-align: center; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1); border: 1px solid var(--border-gray); width: 90%; max-width: 450px; box-sizing: border-box; }
+#modal-content h3 { margin-top: 0; font-size: 1.5em; color: var(--text-dark); margin-bottom: 25px; }
+.form-group { margin-bottom: 15px; text-align: left; }
+.form-group label { display: block; margin-bottom: 8px; font-size: 0.9em; font-weight: 700; color: var(--text-medium); }
+.form-group-inline { display: flex; flex-direction: column; gap: 15px; }
+.form-group-inline .form-group { flex: 1; }
+.modal-input, .modal-select { width: 100%; padding: 12px; font-size: 1.1em; border-radius: 8px; border: 1px solid var(--border-gray); background: var(--bg-main); color: var(--text-dark); font-family: var(--font-sans); box-sizing: border-box; box-shadow: none; }
+.modal-buttons { margin-top: 30px; display: flex; gap: 15px; }
+.modal-buttons button { flex: 1; background-color: var(--brand-red); color: var(--bg-card); font-family: var(--font-mono); font-weight: 700; padding: 12px 20px; border: none; border-radius: 8px; cursor: pointer; font-size: 1em; margin: 0; box-shadow: 0 4px 10px rgba(215, 0, 15, 0.2); transition: all 0.3s; }
+.modal-buttons #cancel-vote { background-color: var(--text-medium); box-shadow: 0 4px 10px rgba(90, 101, 120, 0.2); }
+.modal-buttons button:hover { transform: translateY(-3px); }
+.modal-buttons button:disabled { background-color: #999; cursor: not-allowed; box-shadow: none; }
+
+/* 11. Toast 和 動畫 (V19 不變) */
+#toast-container { position: fixed; top: 20px; right: 20px; z-index: 9999; }
+.toast-item { background-color: var(--brand-red); color: var(--bg-card); font-family: var(--font-sans); font-weight: 700; padding: 15px 25px; border-radius: 12px; box-shadow: 0 5px 15px rgba(215, 0, 15, 0.3); margin-bottom: 10px; animation: slideInRight 0.4s ease, fadeOut 0.4s ease 2.5s forwards; }
+@keyframes slideInRight { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+@keyframes fadeOut { from { opacity: 1; } to { opacity: 0; transform: translateX(100%); } }
+@keyframes scroll-up { from { transform: translateY(0); } to { transform: translateY(-50%); } }
+@keyframes slideInUp { from { transform: translateY(50px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+
+/* /----------------------------------------------------/
+/--- V48 核心：電腦版響應式 ---/
+/----------------------------------------------------/
+*/
+@media (min-width: 1024px) {
+    body { padding: 0; overflow: hidden; }
+
+    /* V48: main-title 調整 */
+    .main-title {
+        font-size: 2.5em; /* 電腦端標題 */
+        text-align: center; /* 遵囑: 電腦版也居中 */
+        padding: 20px 30px 0px 30px; /* 內邊距調整 */
+    }
+
+    .main-container { padding: 0px 30px 30px 30px; max-width: 100%; height: calc(100vh - 80px); /* V48: 減去標題高度 */ box-sizing: border-box; margin: 0 auto; } /* V48: 調整 padding 和 height */
+
+    .dashboard-container {
+        width: 100%; height: 100%; /* V48: 佔滿 100% */
+        flex-direction: row; /* 水平佈局 */
+        background: var(--bg-card); /* V48: 整體容器背景改為白色 */
+        border: 1px solid var(--border-gray);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+        border-radius: 12px;  gap: 0;
+        min-height: 0; margin: 0;
+    }
+
+    .card { background: none; box-shadow: none; border: none; margin-bottom: 0; padding: 0; opacity: 1; transform: none; animation: none; }
+
+    .map-column {
+        flex: 3; padding: 30px; /* V48: 右側內邊距 */
+        border-right: 1px solid var(--border-gray);
+        display: flex; flex-direction: column;
+        overflow: hidden;
+    }
+    .map-column header { padding-bottom: 0; flex-shrink: 0; }
+    .map-column header h1 { font-size: 2.2em; padding-bottom: 20px; margin-bottom: 20px; text-align: left; }
+    .map-column h2 { flex-direction: row; gap: 20px; font-weight: 300; justify-content: flex-start; }
+
+    main { flex-grow: 1; padding-top: 15px; position: relative; }
+    #map-container { min-height: 500px; height: 100%; }
+    .danmaku-input-wrapper { margin-top: 20px; flex-shrink: 0; padding: 15px; background: var(--bg-main); border: 1px solid var(--border-gray); border-radius: 12px; }
+
+    /* V47 電腦版彈幕輸入欄 (不變) */
+    .danmaku-input-bar { flex-direction: row; }
+    .danmaku-input-field { flex-grow: 1; }
+    .danmaku-input-actions { flex-shrink: 0; }
+    #danmaku-send-btn { flex-grow: 0; }
+    .emoji-picker { bottom: 70px; left: 15px; }
+
+    .feed-column {
+        flex: 2; padding: 30px; /* V48: 移除頂部和右側內邊距 */
+        display: flex; flex-direction: column; gap: 10px;
+    }
+
+    /* V48: 調整右側卡片樣式 */
+    .button-card,
+    .image-card, /* V48: 圖片卡片也應用這個樣式 */
+    #live-feed-container,
+    #ranking-container {
+        background: var(--bg-main); /* 讓右側的卡片背景都是淺灰色 */
+        border: 1px solid var(--border-gray);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        border-radius: 12px;
+        padding: 20px; /* V48: 圖片卡片設置 padding */
+    }
+
+    .image-card {
+        padding: 5px; /* V48: 讓圖片卡片有內邊距 */
+    }
+
+    .button-primary.large { margin-bottom: 0; }
+
+    .right-column-wrapper {
+        flex-direction: row; flex: 1;
+        min-height: 0; gap: 20px;
+    }
+
+    #live-feed-container,
+    #ranking-container {
+        flex: 1; height: auto; min-height: 0;
+        /* V48: 已在上面統一設置樣式 */
+    }
+
+    #feed-list-wrapper { flex-grow: 1; overflow: hidden; }
+    #feed-list {
+        height: auto;
+        animation: scroll-up 30s linear infinite;
+        overflow-y: hidden;
+    }
+    #feed-list:hover {
+        animation-play-state: paused;
+        overflow-y: auto;
+        padding-right: 5px;
+    }
+
+    #feed-list:hover::-webkit-scrollbar, #ranking-list::-webkit-scrollbar { width: 6px; }
+    #feed-list:hover::-webkit-scrollbar-track, #ranking-list::-webkit-scrollbar-track { background: transparent; }
+    #feed-list:hover::-webkit-scrollbar-thumb, #ranking-list:hover::-webkit-scrollbar-thumb { background: var(--brand-red); border-radius: 4px; }
+
+    .form-group-inline {
+        flex-direction: row;
+    }
+}
